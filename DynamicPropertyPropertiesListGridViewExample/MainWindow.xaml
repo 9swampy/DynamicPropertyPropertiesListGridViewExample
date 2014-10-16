@@ -1,0 +1,40 @@
+﻿<Window x:Class="DynamicPropertyPropertiesListGridViewExample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="clr-namespace:DynamicPropertyPropertiesListGridViewExample"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+  <Window.Resources>
+    <local:ConfigToDynamicGridViewConverter x:Key="ConfigToDynamicGridViewConverter" />
+  </Window.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition />
+      <RowDefinition />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <ListView Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding Path=People}">
+      <ListView.View>
+        <GridView>
+          <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
+          <GridViewColumn Header="Age" DisplayMemberBinding="{Binding Age}"  />
+          <GridViewColumn Header="Hobbies"  DisplayMemberBinding="{Binding Hobbies}"/>
+        </GridView>
+      </ListView.View>
+    </ListView>
+    <ListView Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding Path=People}"
+              local:GridViewSort.AutoSort="True"
+              local:GridViewSort.ShowSortGlyph="False">
+      <ListView.View>
+        <GridView>
+          <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" local:GridViewSort.PropertyName="Name" />
+          <GridViewColumn Header="Age" DisplayMemberBinding="{Binding Age}" local:GridViewSort.PropertyName="Age"  />
+          <GridViewColumn Header="Hobbies"  DisplayMemberBinding="{Binding Hobbies}" local:GridViewSort.PropertyName="Hobbies"/>
+          <GridViewColumn Header="OtherHalfName"  DisplayMemberBinding="{Binding OtherHalf.Name}" local:GridViewSort.PropertyName="OtherHalf.Name"/>
+        </GridView>
+      </ListView.View>
+    </ListView>
+    <ListView Grid.Row="2" ItemsSource="{Binding Products}" View="{Binding ColumnConfig, Converter={StaticResource ConfigToDynamicGridViewConverter}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" local:GridViewSort.AutoSort="True" local:GridViewSort.ShowSortGlyph="False" />
+    <ListView Grid.Row="3" ItemsSource="{Binding People}" View="{Binding PeopleColumnConfig, Converter={StaticResource ConfigToDynamicGridViewConverter}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" local:GridViewSort.AutoSort="True" local:GridViewSort.ShowSortGlyph="True" />
+  </Grid>
+</Window>
